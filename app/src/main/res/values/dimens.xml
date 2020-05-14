@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="kich_thuoc_chuan_gg">16dp</dimen>
+    <dimen name="kich_thuoc_tieu_de">25sp</dimen>
+</resources>

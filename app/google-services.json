@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "452465220939",
+    "firebase_url": "https://doanrasp-biensoxe.firebaseio.com",
+    "project_id": "doanrasp-biensoxe",
+    "storage_bucket": "doanrasp-biensoxe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452465220939:android:ed237a4314766d0e3a1cce",
+        "android_client_info": {
+          "package_name": "com.example.doanrasp_biensoxe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452465220939-6rppkua4p694ae7cul6af0p0bi2amvut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoLIPTrJWVadiVFKXUqvIGzSOzlSqUiEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452465220939-6rppkua4p694ae7cul6af0p0bi2amvut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
