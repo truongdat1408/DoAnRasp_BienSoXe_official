@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageButton
@@ -17,7 +17,25 @@
             android:layout_height="60dp"
             android:background="@null"
             android:src="@drawable/back_icon" />
-
+        <Button
+            android:layout_marginLeft="@dimen/kich_thuoc_tieu_de"
+            android:layout_toRightOf="@id/btnBack"
+            android:onClick="management"
+            android:id="@+id/btn_management"
+            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:background= "#00FAF7F7"
+            android:textColor="#2196F3"
+            android:text="MANAGEMENT" />
+        <Button
+            android:layout_marginLeft="@dimen/kich_thuoc_tieu_de"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btn_clear_history"
+            android:layout_height="60dp"
+            android:layout_width="wrap_content"
+            android:background= "#00FAF7F7"
+            android:textColor="#2196F3"
+            android:text="CLEAR ALL HISTORY" />
 
     </RelativeLayout>
 
@@ -47,35 +65,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2196F3"
-        android:padding="5dp"
+        android:padding="0dp"
         android:stretchColumns="*">
 
-        <TableRow>
+        <TableRow android:weightSum="10">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="15dp"
+                android:layout_gravity="center_horizontal"
                 android:text="ORDER"
                 android:textColor="#fff"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_weight="5"
-                android:text="CODE"
-                android:textColor="#fff"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_weight="2"
-                android:text="ARRIVAL TIME"
-                android:textColor="#fff"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:layout_weight="3"
-                android:text="EXIT TIME"
+                android:layout_width="79dp"
+                android:layout_gravity="center_horizontal"
+                android:text="NAME"
+                android:textColor="#fff"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:text="CODE"
+                android:layout_weight="5"
+                android:layout_width="81dp"
+                android:textColor="#fff"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="73dp"
+                android:layout_gravity="center_horizontal"
+                android:text="ARRIVAL-TIME"
+                android:layout_weight="2"
                 android:textColor="#fff"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -86,7 +111,5 @@
         android:id="@+id/lv_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-
 
 </LinearLayout>

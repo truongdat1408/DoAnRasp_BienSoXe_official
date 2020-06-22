@@ -1,10 +1,12 @@
 package com.example.doanrasp_biensoxe;
 
-public class content {
-    private String  mCode, mArriveTime, mExitTime;
+import androidx.annotation.NonNull;
+
+public class Content {
+    private String  mCode, mArriveTime, mName;
     private int mOrder;
 
-    public content() {
+    public Content() {
     }
 
     public int getmOrder() {
@@ -31,19 +33,26 @@ public class content {
         this.mArriveTime = mArriveTime;
     }
 
-    public String getmExitTime() {
-        return mExitTime;
+    public String getmName() {
+        return mName;
     }
 
-    public void setmExitTime(String mExitTime) {
-        this.mExitTime = mExitTime;
+    public void setmExitTime(String mName) {
+        this.mName = mName;
     }
 
-    public content(int mOrder, String mCode, String mArriveTime, String mExitTime) {
+    public Content(int mOrder, String mCode, String mArriveTime, String mName) {
         this.mOrder = mOrder;
         this.mCode = mCode;
         this.mArriveTime = mArriveTime;
-        this.mExitTime = mExitTime;
+        this.mName = mName;
+    }
 
+    @NonNull
+    @Override
+    public String toString() {
+        String x = "mOrder:"+String.valueOf(getmOrder())+" mCode: "+getmCode()+" mArrTime:"+getmArriveTime()
+                + " mExitTime:"+getmName();
+        return x;
     }
 }

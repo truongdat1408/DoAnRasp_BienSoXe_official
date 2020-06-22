@@ -1,23 +1,28 @@
 package com.example.doanrasp_biensoxe;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -25,8 +30,9 @@ public class Main2Activity extends AppCompatActivity {
     private ImageButton btnQuayLai;
     private Handler handler = new Handler();
     private ListView listViewContent;
+    private Button buttonClearHistory;
 
-    ArrayList<content> arrayList    = new ArrayList<>();
+    ArrayList<Content> arrayList = new ArrayList<>();
     DatabaseReference mDatabase;
 
     @Override
@@ -38,17 +44,19 @@ public class Main2Activity extends AppCompatActivity {
 
         final CustomAdapter customAdapter =new CustomAdapter(this, R.layout.item_content, arrayList);
         listViewContent.setAdapter(customAdapter);
-
-        mDatabase.child("content").addChildEventListener(new ChildEventListener() {
+        mDatabase.child("Content").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                content noidung = dataSnapshot.getValue(content.class);
+                Content noidung = dataSnapshot.getValue(Content.class);
+                Log.d("CHECK NOIDUNG", "onChildAdded: "+noidung.toString());
                 arrayList.add(noidung);
-
+                Log.d("CHECK ARRAY", "onChildAdded: "+arrayList.get(arrayList.size()-1).toString());
+                // Log.d("CHECK ARRAY", "onChildAdded: "+arrayList.get(arrayList.size()-1).toString());
+                Log.d("Check INDEXREMOVE", "onChildRemoved: "+findmOrderInArray(noidung));
                 Toast.makeText(Main2Activity.this, noidung.getmOrder() + " - "
                         +noidung.getmCode()+ " - " + noidung.getmArriveTime() + " - "
-                        +noidung.getmExitTime(),Toast.LENGTH_SHORT ).show();
+                        +noidung.getmName(),Toast.LENGTH_SHORT ).show();
                 customAdapter.notifyDataSetChanged();
 
             }
@@ -60,12 +68,15 @@ public class Main2Activity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                content noidung = dataSnapshot.getValue(content.class);
-                arrayList.remove(arrayList.indexOf(noidung));
-                Toast.makeText(Main2Activity.this, "Removing: "+ noidung.getmOrder() + " - "
-                        +noidung.getmCode()+ " - " + noidung.getmArriveTime() + " - "
-                        +noidung.getmExitTime(),Toast.LENGTH_SHORT ).show();
-                customAdapter.notifyDataSetChanged();
+//                Content noidung = dataSnapshot.getValue(Content.class);
+//                Log.d("Check NOIDUNG", "onChildRemoved: "+ noidung.toString());
+//                Log.d("CHECK ARRAY", "onChildAdded: "+arrayList.get(arrayList.size()-1).toString());
+//                Log.d("Check INDEXREMOVE", "onChildRemoved: "+findmOrderInArray(noidung));
+//                arrayList.remove(arrayList.indexOf(noidung));
+//                Toast.makeText(Main2Activity.this, "Removing: "+ noidung.getmOrder() + " - "
+//                        +noidung.getmCode()+ " - " + noidung.getmArriveTime() + " - "
+//                        +noidung.getmName(),Toast.LENGTH_SHORT ).show();
+//                customAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -79,20 +90,50 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+        buttonClearHistory = (Button) findViewById(R.id.btn_clear_history);
+        buttonClearHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Main2Activity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                builder.setTitle("Are you sure CLEAR ALL HISTORY?");
+                builder.setMessage("Your choice: ");
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        arrayList.clear();
+                        customAdapter.notifyDataSetChanged();
+                        Toast.makeText(Main2Activity.this, "DONE!", Toast.LENGTH_SHORT).show();
+                        FirebaseDatabase.getInstance().getReference()
+                                .child("Content")
+                                .setValue(null) //Khi set value bằng null thì child sẽ tự động bị xóa
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                    }
+                                });
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Không có gì cả
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
     }
 
-    void BangNoiDung(final ArrayList<content> arrayList) {
-//        content content1 = new content( 1, "D1-43-8683", "12:00 2/4", "14:00 2/4" );
-//        content content2 = new content( 2, "D1-97-8888", "13:00 2/4", "17:00 2/4" );
-//        content content3 = new content( 3, "D1-43-1086", "19:00 2/4", "18:00 2/4" );
-//
-//        arrayList.add(content1);
-//        arrayList.add(content2);
-//        arrayList.add(content3);
-
-
-
+    private int findmOrderInArray(Content content) {
+        for (int i=0;i<arrayList.size()-1;i++) {
+            Log.d("CHECK FORRRRRRR", "findmOrderInArray: "+arrayList.get(i).getmOrder());
+            if (content.getmOrder()== arrayList.get(i).getmOrder()) return i;
+        }
+        return -1;
     }
 
 
@@ -109,4 +150,28 @@ public class Main2Activity extends AppCompatActivity {
             finish();
         }
     }
+
+    //Nut Management
+    public void management(View view){
+        if(view.getId() == R.id.btn_management){
+            Intent intent = new Intent(Main2Activity.this, MainManagementActivity.class);
+            startActivity(intent);
+        }
+    }
+
 }
+
+/*Change Event
+*
+* Content noidung = dataSnapshot.getValue(Content.class);
+                for (Content i: arrayList) {
+                    if (i.getmCode() == noidung.getmCode()){
+                        i.setmExitTime(noidung.getmName());
+                        Toast.makeText(Main2Activity.this, "Update: "+ noidung.getmOrder() + " - "
+                                +noidung.getmCode()+ " - " + noidung.getmArriveTime() + " - "
+                                +noidung.getmName(),Toast.LENGTH_SHORT ).show();
+                        break;
+                    }
+                }
+                customAdapter.notifyDataSetChanged();
+* */
